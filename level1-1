@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_USERNAME_LEN 20
+
+// 记录当前登录用户，初始为未登录（空字符串）
+char currentUser[MAX_USERNAME_LEN] = "";
+
+int main() {
+    char command[20];
+    char username[MAX_USERNAME_LEN];
+
+    while (1) {
+        printf("请输入指令（Login/Exit/Quit）：");
+        scanf("%s", command);
+
+        if (strcmp(command, "Login") == 0) {
+            if (strlen(currentUser) > 0) {
+                printf("已有用户登录，请先退出当前登录\n");
+                continue;
+            }
+            printf("请输入用户名：");
+            scanf("%s", username);
+            // 校验用户名格式（仅支持A-Z或Admin）
+            if ((username[0] >= 'A' && username[0] <= 'Z' && strlen(username) == 1) || 
+                strcmp(username, "Admin") == 0) {
+                strcpy(currentUser, username);
+                printf("登录成功\n");
+            } else {
+                printf("用户名格式错误（仅支持A-Z单个字母或Admin）\n");
+            }
+        } else if (strcmp(command, "Exit") == 0) {
+            if (strlen(currentUser) == 0) {
+                printf("当前未登录\n");
+            } else {
+                printf("退出登录成功\n");
+                currentUser[0] = '\0'; // 清空当前用户
+            }
+        } else if (strcmp(command, "Quit") == 0) {
+            printf("程序已退出\n");
+            break;
+        } else {
+            printf("指令无效，请输入Login/Exit/Quit\n");
+        }
+    }
+
+    return 0;
+}
